@@ -1,0 +1,70 @@
+import '../main.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import MainPost from '../MainPost/MainPost';
+import OtherPosts from '../OtherPosts/OtherPosts';
+import './Posts.css';
+
+interface Post {
+    userId: number;
+    id: number;
+    title: string;
+    body: string;
+}
+
+const Posts: React.FC = () => {
+    const [posts, setPosts] = useState<Post[]>([]);
+    const [firstPost, setFirstPost] = useState<Post | null>(null);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+
+    useEffect(() => {
+        axios.get<Post[]>('https://jsonplaceholder.typicode.com/posts')
+            .then(response => {
+                const startIndex = 1;
+                const numberOfPosts = 4;
+                const selectedPosts = response.data.slice(startIndex, startIndex + numberOfPosts);
+                setPosts(selectedPosts);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        axios.get<Post>('https://jsonplaceholder.typicode.com/posts/1')
+            .then(response => {
+                setFirstPost(response.data);
+                console.log(firstPost);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }, []);
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredPosts = posts.filter(post =>
+        post.title.toLowerCase().startsWith(searchTerm.toLowerCase())
+    );
+
+    return (
+        <main className='main'>
+            <section className='posts'>
+                <div className="container">
+                    <input
+                        type="text"
+                        className='header__input'
+                        placeholder='Поиск по названию статьи'
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
+
+                    {firstPost && <MainPost firstPost={firstPost} />}
+                    <OtherPosts posts={filteredPosts} />
+                </div>
+            </section>
+        </main>
+    );
+};
+
+export default Posts;
