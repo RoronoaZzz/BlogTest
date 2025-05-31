@@ -4,6 +4,9 @@ import axios from 'axios';
 import MainPost from '../MainPost/MainPost';
 import OtherPosts from '../OtherPosts/OtherPosts';
 import './Posts.css';
+import Header from '../Header/Header';
+
+
 
 interface Post {
     userId: number;
@@ -16,6 +19,10 @@ const Posts: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
     const [firstPost, setFirstPost] = useState<Post | null>(null);
     const [searchTerm, setSearchTerm] = useState<string>('');
+
+
+
+
 
     useEffect(() => {
         axios.get<Post[]>('https://jsonplaceholder.typicode.com/posts')
@@ -48,22 +55,27 @@ const Posts: React.FC = () => {
     );
 
     return (
-        <main className='main'>
-            <section className='posts'>
-                <div className="container">
-                    <input
-                        type="text"
-                        className='header__input'
-                        placeholder='Поиск по названию статьи'
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                    />
 
-                    {firstPost && <MainPost firstPost={firstPost} />}
-                    <OtherPosts posts={filteredPosts} />
-                </div>
-            </section>
-        </main>
+        <>
+              <Header />
+            <main className='main'>
+                <section className='posts'>
+                    <div className="container">
+                        <input
+                            type="text"
+                            className='header__input'
+                            placeholder='Поиск по названию статьи'
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                        />
+
+                        {firstPost && <MainPost firstPost={firstPost} />}
+                        <OtherPosts posts={filteredPosts} />
+                    </div>
+                </section>
+            </main>
+        </>
+
     );
 };
 

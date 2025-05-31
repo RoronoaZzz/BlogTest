@@ -3,6 +3,8 @@ import PostCard from '../PostCard/PostCard';
 import '../main.css'
 import './OtherPosts.css'
 
+
+
 interface Post {
   userId: number;
   id: number;
