@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../main.css'
 import '../OtherPosts/OtherPosts.css'
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Score from '../Score/Score';
 
@@ -34,7 +33,12 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         <h3 className='other__card--title'>{post.title}</h3>
         <div className='post__main--rate'>
           <Score />
-          <button className='btn-reset other__card--btn' onClick={handleReadMore}>Читать дальше</button>
+          <button
+            className='btn-reset other__card--btn'
+            onClick={handleReadMore}
+            aria-label={`Читать подробнее о посте ${post.title}`}>
+            Читать дальше
+          </button>
         </div>
 
       </div>

@@ -18,12 +18,12 @@ const Score = () => {
     const handleLike = () => {
 
         if (activeLikeBtn === 'none') {
-            setLikeCount(likeCount + 1);
+            setLikeCount(prev => prev + 1);
             setActiveLikeBtn('like');
             setIsGreen(true);
 
             if (activeDisLikeBtn === 'dislike') {
-                setDisLikeCount(disLikeCount - 1);
+                setDisLikeCount(prev => prev + 1);
                 setActiveDisLikeBtn('none');
                 setIsRed(false);
             }

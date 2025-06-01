@@ -25,25 +25,20 @@ const Posts: React.FC = () => {
 
 
     useEffect(() => {
-        axios.get<Post[]>('https://jsonplaceholder.typicode.com/posts')
-            .then(response => {
-                const startIndex = 1;
-                const numberOfPosts = 4;
-                const selectedPosts = response.data.slice(startIndex, startIndex + numberOfPosts);
+        const fetchData = async () => {
+            try {
+                const postsResponse = await axios.get<Post[]>('https://jsonplaceholder.typicode.com/posts');
+                const selectedPosts = postsResponse.data.slice(1, 5);
                 setPosts(selectedPosts);
-            })
-            .catch(error => {
-                console.error(error);
-            });
 
-        axios.get<Post>('https://jsonplaceholder.typicode.com/posts/1')
-            .then(response => {
-                setFirstPost(response.data);
-                console.log(firstPost);
-            })
-            .catch(error => {
+                const firstPostResponse = await axios.get<Post>('https://jsonplaceholder.typicode.com/posts/1');
+                setFirstPost(firstPostResponse.data);
+            } catch (error) {
                 console.error(error);
-            });
+            }
+        };
+
+        fetchData();
     }, []);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +52,7 @@ const Posts: React.FC = () => {
     return (
 
         <>
-              <Header />
+            <Header />
             <main className='main'>
                 <section className='posts'>
                     <div className="container">
